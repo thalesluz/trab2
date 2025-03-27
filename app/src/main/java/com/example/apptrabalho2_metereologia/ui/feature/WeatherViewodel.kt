@@ -1,8 +1,10 @@
 package com.example.apptrabalho2_metereologia.ui.feature
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apptrabalho2_metereologia.data.repository.WeatherRepository
+import com.example.apptrabalho2_metereologia.utils.LocationHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewodel @Inject constructor(
-    private val weatherRepository : WeatherRepository
+    private val weatherRepository : WeatherRepository,
+    private val application: Application
 ) : ViewModel() {
 
     private val _weatherInfoState = MutableStateFlow(WeatherInfoState())
@@ -26,9 +29,19 @@ class WeatherViewodel @Inject constructor(
 
     private fun getWeatherInfo() {
         viewModelScope.launch {
-            val weatherInfo = weatherRepository.getWeatherData(-19.912998f, -43.940933f)
-            _weatherInfoState.update {
-                it.copy(weatherInfo = weatherInfo)
+            val locationHelper = LocationHelper(application.applicationContext)
+            try {
+                val location = locationHelper.getCurrentLocation()
+                if (location != null) {
+                    val latitude = location.latitude.toFloat()
+                    val longitude = location.longitude.toFloat()
+                    val weatherInfo = weatherRepository.getWeatherData(latitude, longitude)
+                    _weatherInfoState.update {
+                        it.copy(weatherInfo = weatherInfo)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

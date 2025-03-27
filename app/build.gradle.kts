@@ -55,6 +55,7 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0") // Lifecycle-runtime-ktx
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation(libs.play.services.location)
 
     val ktorVersion = "2.3.7"
     implementation("io.ktor:ktor-client-core:$ktorVersion") //
