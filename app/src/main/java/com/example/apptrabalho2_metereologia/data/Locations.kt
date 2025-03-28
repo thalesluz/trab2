@@ -1,7 +1,11 @@
 package com.example.apptrabalho2_metereologia.data
-
+/** Deepseek - início
+ * Prompt: adicionar cidades brasileiras nesse formato "Aracaju"
+ * "My location" to Pair(null, null),
+ * "Abaetetuba" to Pair(-1.7178f, -48.8828f),
+ */
 val locations = listOf(
-    "Your location" to Pair(null, null),
+    "My location" to Pair(null, null),
     "Abaetetuba" to Pair(-1.7178f, -48.8828f),
     "Abu Dhabi" to Pair(24.4539f, 54.3773f),
     "Accra" to Pair(5.6037f, -0.1870f),
@@ -470,3 +474,4 @@ val locations = listOf(
     "Zagreb" to Pair(45.8150f, 15.9819f),
     "Zurich" to Pair(47.3769f, 8.5417f)
 )
+/** Deepseek - final */
