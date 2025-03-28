@@ -22,7 +22,11 @@ class WeatherViewodel @Inject constructor(
 
     private val _weatherInfoState = MutableStateFlow(WeatherInfoState())
     val weatherInfoState: StateFlow<WeatherInfoState> = _weatherInfoState.asStateFlow()
-
+    private val _customLocation = MutableStateFlow<Pair<Float?, Float?>?>(null)
+    fun updateLocation(coordinates: Pair<Float?, Float?>) {
+        _customLocation.value = coordinates
+        getWeatherInfo()
+    }
     init {
         getWeatherInfo()
     }
@@ -33,8 +37,8 @@ class WeatherViewodel @Inject constructor(
             try {
                 val location = locationHelper.getCurrentLocation()
                 if (location != null) {
-                    val latitude = location.latitude.toFloat()
-                    val longitude = location.longitude.toFloat()
+                    val latitude = _customLocation.value?.first ?: location.latitude.toFloat()
+                    val longitude = _customLocation.value?.second ?: location.longitude.toFloat()
                     val weatherInfo = weatherRepository.getWeatherData(latitude, longitude)
                     _weatherInfoState.update {
                         it.copy(weatherInfo = weatherInfo)
