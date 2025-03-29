@@ -1,3 +1,5 @@
+package com.example.apptrabalho2_metereologia.data.remote.response
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,7 +18,8 @@ data class WeatherDataResponse(
     val timezone: Int,
     val id: Long,
     val name: String,
-    val cod: Int
+    val cod: Int,
+    var hourlyForecast: List<ForecastItem>? = null
 )
 
 @Serializable
@@ -70,3 +73,6 @@ data class Sys(
     val sunrise: Long,
     val sunset: Long
 )
+
+
+

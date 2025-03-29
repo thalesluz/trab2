@@ -7,4 +7,5 @@ data class WeatherInfo(
     val temperature: Int,
     val dayOfWeek: String,
     val isDay: Boolean,
+    val hourlyForecasts: List<HourlyForecast> = emptyList()
 )

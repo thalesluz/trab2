@@ -1,6 +1,7 @@
 package com.example.apptrabalho2_metereologia.ui.feature
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apptrabalho2_metereologia.data.repository.WeatherRepository
@@ -13,10 +14,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class WeatherViewodel @Inject constructor(
-    private val weatherRepository : WeatherRepository,
+    private val weatherRepository: WeatherRepository,
     private val application: Application
 ) : ViewModel() {
 
@@ -24,23 +24,30 @@ class WeatherViewodel @Inject constructor(
     val weatherInfoState: StateFlow<WeatherInfoState> = _weatherInfoState.asStateFlow()
 
     init {
+        Log.d("WeatherViewModel", "Inicializando ViewModel")
         getWeatherInfo()
     }
 
     private fun getWeatherInfo() {
         viewModelScope.launch {
+            Log.d("WeatherViewModel", "Iniciando busca de dados do clima")
             val locationHelper = LocationHelper(application.applicationContext)
             try {
                 val location = locationHelper.getCurrentLocation()
                 if (location != null) {
+                    Log.d("WeatherViewModel", "Localização obtida: ${location.latitude}, ${location.longitude}")
                     val latitude = location.latitude.toFloat()
                     val longitude = location.longitude.toFloat()
                     val weatherInfo = weatherRepository.getWeatherData(latitude, longitude)
+                    Log.d("WeatherViewModel", "Dados do clima obtidos: $weatherInfo")
                     _weatherInfoState.update {
                         it.copy(weatherInfo = weatherInfo)
                     }
+                } else {
+                    Log.e("WeatherViewModel", "Não foi possível obter a localização")
                 }
             } catch (e: Exception) {
+                Log.e("WeatherViewModel", "Erro ao buscar dados do clima: ${e.message}", e)
                 e.printStackTrace()
             }
         }

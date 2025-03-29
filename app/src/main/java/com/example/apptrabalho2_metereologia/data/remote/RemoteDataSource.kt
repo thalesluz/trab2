@@ -1,8 +1,8 @@
 package com.example.apptrabalho2_metereologia.data.remote
 
-import WeatherDataResponse
+import com.example.apptrabalho2_metereologia.data.remote.response.WeatherDataResponse
 
 interface RemoteDataSource {
 
-    suspend fun getWeatherDataResponse(lat:Float, lng:Float): WeatherDataResponse
+    suspend fun getWeatherDataResponse(lat: Float, lng: Float): WeatherDataResponse
 }
